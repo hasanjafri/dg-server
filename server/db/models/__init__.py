@@ -1,6 +1,6 @@
-from gino import Gino
+from sqlalchemy.ext.declarative import declarative_base
 
-db = Gino()
+Base = declarative_base()
 
 from db.models.admin import Admin
 from db.models.user import User

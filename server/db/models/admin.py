@@ -1,9 +1,12 @@
-from db.models import db
+from sqlalchemy import String, Integer, Column
+from sqlalchemy.orm import column_property, relationship
 
-class Admin(db.Model):
+from db.models import Base
+
+class Admin(Base):
     __tablename__ = 'admins'
 
-    id = db.Column(db.Integer, primary_key=True)
-    email_address = db.Column(db.String, nullable=False)
-    fullname = db.Column(db.String)
-    password = db.Column(db.String)
+    id = Column(Integer, primary_key=True)
+    email_address = Column(String, nullable=False)
+    fullname = Column(String)
+    password = Column(String)

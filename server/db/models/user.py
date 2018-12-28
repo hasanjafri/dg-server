@@ -1,10 +1,13 @@
-from db.models import db
+from sqlalchemy import String, Integer, Column
+from sqlalchemy.orm import column_property, relationship
 
-class User(db.Model):
+from db.models import Base
+
+class User(Base):
     __tablename__ = 'users'
 
-    id = db.Column(db.Integer, primary_key=True)
+    id = Column(Integer, primary_key=True)
     #email_address = db.Column(db.String, nullable=False, unique=True)
-    fullname = db.Column(db.String)
+    fullname = Column(String)
     #password = db.Column(db.String)
     #project_id = db.Column(None, db.ForeignKey('projects.id'))

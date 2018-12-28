@@ -1,3 +1,6 @@
+import sys
+sys.path.append('./db')
+
 from gino.ext.sanic import Gino
 from sanic import Sanic
 from sanic.response import json, file_stream
