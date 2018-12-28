@@ -1,13 +1,15 @@
-from asyncio import get_event_loop
 from gino import Gino
 
 db = Gino()
 
-async def createDb():
-    await db.set_bind()
-    await db.gino.create_all()
+from db.models import Admin
+from db.models import User
 
-    await db.pop_bind().close()
+async def createDb():
+    async with db.with_bind('postgresql://localhost/datagramDb'):
+        await db.gino.create_all()
+        await User.create(fullname="Hasan Jafri")
+        print(await User.query.gino.all())
 
 if __name__ == "__main__":
-    get_event_loop().run_until_complete(createDb())
+    createDb()
