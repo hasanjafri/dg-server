@@ -5,6 +5,8 @@ from sqlalchemy import (
     DateTime, Date, Boolean
 )
 
+from sqlalchemy.orm import relationship
+
 from app.models import Base
 
 class Admin(Base):
@@ -21,6 +23,8 @@ class Admin(Base):
     last_name = Column(String(35), nullable=True)
 
     is_active = Column(Boolean, default=False)
+
+    project = relationship("Project", uselist=False, back_populates="admin")
 
     def __repr__(self):
         """ Show admin object info. """

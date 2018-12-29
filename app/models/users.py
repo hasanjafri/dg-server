@@ -31,8 +31,7 @@ class User(Base):
     is_active = Column(Boolean, default=False)
 
     # Relationships
-    project_id = Column(Integer, ForeignKey('project.id'))
-    project = relationship('Project', back_populates='user')
+    project_id = Column(Integer, ForeignKey('projects.id'))
 
     # Methods
     def __repr__(self):
