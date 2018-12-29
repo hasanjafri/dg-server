@@ -13,10 +13,10 @@ update_deps:
 	pip install --upgrade -r requirements.txt; \
 
 revision:
-	alembic revision --autogenerate;
+	PYTHONPATH=. alembic revision --autogenerate;
 
 upgrade:
-	alembic upgrade head
+	PYTHONPATH=. alembic upgrade head
 
 downgrade:
-	alembic downgrade head
+	PYTHONPATH=. alembic downgrade head
