@@ -2,7 +2,7 @@ init:
 	python -m venv venv; \
 	echo 'source venv/bin/activate' >> .env; \
 	echo 'export DATABASE_URL=""' >> .env; \
-	source ./venv/bin/activate; \
+	source ./venv/Scripts/Activate; \
 	pip install -r requirements.txt; \
 
 run:
