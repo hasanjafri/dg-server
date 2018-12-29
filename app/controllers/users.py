@@ -1,4 +1,4 @@
-""" User controllers using Sanic Class based views. """
+""" Users controller using Sanic Class based views. """
 
 from sanic.response import json
 from sanic.views import HTTPMethodView
