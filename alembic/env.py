@@ -1,5 +1,8 @@
 from __future__ import with_statement
 
+import sys
+sys.path.append('../')
+
 import os
 from logging.config import fileConfig
 
