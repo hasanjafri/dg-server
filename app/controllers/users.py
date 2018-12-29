@@ -45,3 +45,6 @@ class UserController(HTTPMethodView):
 
         # Return json response.
         return json({'msg': 'Successfully created {}'.format(email)})
+
+    async def delete(self, request):
+        pass
