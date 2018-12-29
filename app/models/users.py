@@ -2,8 +2,11 @@
 
 from sqlalchemy import (
     Column, String, Integer,
-    DateTime, Date, Boolean
+    DateTime, Date, Boolean,
+    ForeignKey
 )
+
+from sqlalchemy.orm import relationship
 
 from app.models import Base
 
@@ -15,6 +18,7 @@ class User(Base):
 
     # Authentication Attributes.
     email = Column(String(255), nullable=False)
+    password = Column(String(32), nullable=False)
     token_expires = Column(DateTime, nullable=True)
     perishable_token = Column(String(255), nullable=True, unique=True)
 
@@ -25,6 +29,10 @@ class User(Base):
 
     # Permission Based Attributes.
     is_active = Column(Boolean, default=False)
+
+    # Relationships
+    project_id = Column(Integer, ForeignKey('project.id'))
+    project = relationship('Project', back_populates='user')
 
     # Methods
     def __repr__(self):
