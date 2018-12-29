@@ -9,3 +9,5 @@ from sqlalchemy.ext.declarative import declarative_base
 Base = declarative_base()
 
 from app.models.users import User
+from app.models.admins import Admin
+from app.models.projects import Project
