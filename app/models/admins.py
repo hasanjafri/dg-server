@@ -14,17 +14,19 @@ class Admin(Base):
 
     id = Column(Integer, autoincrement=True, primary_key=True)
 
-    email = Column(String(255), nullable=False)
+    email = Column(String(255), nullable=False, unique=True)
     token_expires = Column(DateTime, nullable=True)
     perishable_token = Column(String(255), nullable=True, unique=True)
 
-    birthday = Column(Date, nullable=True)
-    first_name = Column(String(35), nullable=True)
-    last_name = Column(String(35), nullable=True)
+    birthday = Column(Date, nullable=False)
+    first_name = Column(String(35), nullable=False)
+    last_name = Column(String(35), nullable=False)
 
     is_active = Column(Boolean, default=False)
 
-    project = relationship("Project", uselist=False, back_populates="admin")
+    subscription_tier = Column(Integer, nullable=False)
+
+    project = relationship("Project", uselist=False, back_populates="admin", nullable=True)
 
     def __repr__(self):
         """ Show admin object info. """
