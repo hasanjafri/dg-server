@@ -11,7 +11,6 @@ from sqlalchemy import (
 from sqlalchemy.orm import relationship
 
 from app.models import Base
-from app.utils.auth import generate_api_key
 
 class User(Base):
     __tablename__ = 'users'
@@ -22,8 +21,6 @@ class User(Base):
     email = Column(String(255), nullable=False)
     password = Column(String(500), nullable=True)
     password_salt = Column(String(100), nullable=True)
-    
-    api_key = Column(String(45), default=generate_api_key, unique=True)
 
     created_at = Column(DateTime, default=datetime.datetime.utcnow)
     last_logged_in = Column(DateTime, nullable=True)
