@@ -38,6 +38,7 @@ class User(Base):
 
     # Relationships
     project_id = Column(Integer, ForeignKey('projects.id'))
+    _permissions = Column(String, default='')
 
     # Methods
     def __repr__(self):
@@ -51,3 +52,7 @@ class User(Base):
     def formatted_birthday(self):
         """ Return birthday date in a understandable format. """
         return self.birthday.strftime('%m/%d/%Y')
+
+    def permissions(self):
+        """ Return list of this user's permissions """
+        return [permission for permission in self._permissions.split(';')]
