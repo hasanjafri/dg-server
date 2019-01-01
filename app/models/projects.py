@@ -18,7 +18,7 @@ class Project(Base):
 
     categories = Column(PickleType, nullable=True)
 
-    admin_id = Column(Integer, ForeignKey('admin.id'))
+    admin_id = Column(Integer, ForeignKey('admins.id'))
     admin = relationship('Admin', back_populates="project")
 
     users = relationship('User')

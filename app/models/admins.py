@@ -39,7 +39,7 @@ class Admin(Base):
     subscription_tier = Column(Integer, nullable=False)
     subscription_period = Column(DateTime, nullable=False)
 
-    project = relationship("Project", back_populates="admin", nullable=True)
+    project = relationship("Project", back_populates="admin")
 
     def __repr__(self):
         """ Show admin object info. """
