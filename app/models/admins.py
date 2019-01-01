@@ -29,12 +29,13 @@ class Admin(Base):
     birthday = Column(Date, nullable=False)
     first_name = Column(String(35), nullable=False)
     last_name = Column(String(35), nullable=False)
-    phone_num = Column(String(50), nullable=True)
+    phone_num = Column(String(50), nullable=False)
 
     is_active = Column(Boolean, default=False)
-    activated_at = Column(DateTime, nullable=True, default=None)
+    activated_at = Column(DateTime, default=datetime.datetime.utcnow)
 
     subscription_tier = Column(Integer, nullable=False)
+    subscription_period = Column(DateTime, nullable=False)
 
     project = relationship("Project", uselist=False, back_populates="admin", nullable=True)
 
