@@ -17,8 +17,8 @@ class Admin(Base):
     id = Column(Integer, autoincrement=True, primary_key=True)
 
     email = Column(String(255), nullable=False, unique=True)
-    password = Column(String(500), nullable=True)
-    password_salt = Column(String(100), nullable=True)
+    password = Column(String(500), nullable=False)
+    password_salt = Column(String(100), nullable=False)
 
     api_key = Column(String(45), default=generate_api_key, unique=True)
 
