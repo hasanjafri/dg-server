@@ -8,7 +8,7 @@ def get_salt():
     return salt
 
 def hash_password(plain_text_pwd, salt):
-    hashed_password = hashlib.sha512(plain_text_pwd + salt.encode('utf-8')).hexdigest()
+    hashed_password = hashlib.sha512(plain_text_pwd.encode('utf-8') + salt.encode('utf-8')).hexdigest()
     return hashed_password
 
 def hash_password_256(plain_text_pwd, salt):

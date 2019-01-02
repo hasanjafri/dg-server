@@ -1,12 +1,13 @@
 """ App entry point. """
 import os
 from sanic import Sanic
-
+from sanic_cors import CORS
 
 def create_app():
     """ Function for bootstrapping sanic app. """
 
     app = Sanic(__name__)
+    CORS(app, automatic_options=True)
 
     # Register Blueprints/Views.
     from app.controllers.users import UserController
