@@ -33,7 +33,7 @@ class Admin(Base):
     country = Column(String(74), nullable=False)
     country_code = Column(String(2), nullable=False)
 
-    is_active = Column(Boolean, default=False)
+    is_active = Column(Boolean, default=True)
     activated_at = Column(DateTime, default=datetime.datetime.utcnow)
 
     subscription_tier = Column(Integer, nullable=False)
@@ -52,3 +52,12 @@ class Admin(Base):
     def formatted_birthday(self):
         """ Return birthday date in a understandable format. """
         return self.birthday.strftime('%m/%d/%Y')
+
+    def to_dict(self):
+        ret = {
+            'id': self.id,
+            'name': self.full_name(),
+            'email': self.email,
+            'tel': self.phone_num,
+            'created_at': 
+        }

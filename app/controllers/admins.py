@@ -11,6 +11,14 @@ from app.utils.auth import create_password
 class AdminController(HTTPMethodView):
     """ Handles Admin CRUD operations. """
     
+    async def valid_api_key(self, api_key):
+        with scoped_session() as session:
+            admin = session.query(Admin).filter_by(api_key=api_key).one()
+            if admin.is_active == True:
+                return True
+            else:
+                return False
+
     async def get(self, request):
         pass
     
