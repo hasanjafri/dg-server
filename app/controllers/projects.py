@@ -25,6 +25,10 @@ class ProjectController(HTTPMethodView):
             
         return admin
 
+    async def check_api_key_corresponds_to_id(self, api_key, project_id, project_name):
+        admin = await self.get_admin_from_api_key(api_key)
+        
+
     async def get(self, request):
         pass
     
@@ -49,3 +53,17 @@ class ProjectController(HTTPMethodView):
                 session.add(project)
 
             return json({'msg': 'Project {} was succesfully added!'.format(project_name)})
+        else:
+            return json({'error': 'API Key: {} is invalid'.format(api_key)}, status=400)
+
+    async def delete(self, request):
+        for param in ['project_name', 'api_key', 'project_id']:
+            if request.json.get(param) == None:
+                return json({'error': 'No {} provided for this request!'.format(param)}, status=400)
+
+        project_name = request.json.get('project_name')
+        api_key = request.json.get('api_key')
+        project_id = request.json.get('project_id')
+
+        with scoped_session() as session:
+            session.query(Project).filter_by(project_name=project_name)
