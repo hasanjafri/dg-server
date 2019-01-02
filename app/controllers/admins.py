@@ -1,4 +1,5 @@
 """ Admins controller using Sanic Class based views. """
+import datetime
 
 from sanic.response import json
 from sanic.views import HTTPMethodView
@@ -19,13 +20,15 @@ class AdminController(HTTPMethodView):
                 return json({'error': '{} field cannot be blank!'.format(param)}, status=400)
         
         (salt, password) = create_password(request.json.get('password'))
+        bday_str = request.json.get('bday').split('-')
+        bday = datetime.date(int(bday_str[0]), int(bday_str[1]), int(bday_str[2]))
 
         with scoped_session() as session:
             admin = Admin(
                 email=request.json.get('email'),
                 password=password,
                 password_salt=salt,
-                birthday=request.json.get('bday'),
+                birthday=bday,
                 first_name=request.json.get('firstName'),
                 last_name=request.json.get('lastName'),
                 phone_num=request.json.get('phoneNum'),
