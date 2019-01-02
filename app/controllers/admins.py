@@ -16,8 +16,8 @@ class AdminController(HTTPMethodView):
     
     async def post(self, request):
         for param in ['email', 'password', 'firstName', 'lastName', 'phoneNum', 'country', 'countryCode', 'bday', 'tier', 'period']:
-            if request.json[param] == "":
-                return json({'error': '{} field cannot be blank!'.format(param)}, status=400)
+            if request.json.get(param) == "":
+                return json({'error': '{} eafield cannot be blank!'.format(param)}, status=400)
         
         (salt, password) = create_password(request.json.get('password'))
         bday_str = request.json.get('bday').split('-')

@@ -5,7 +5,7 @@ from sanic.views import HTTPMethodView
 
 from app.database import scoped_session, Session
 from app.models.users import User
-
+from app.utils.auth import create_password
 
 class UserController(HTTPMethodView):
     """ Handles User CRUD operations. """
