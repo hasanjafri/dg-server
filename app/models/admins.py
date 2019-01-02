@@ -10,6 +10,7 @@ from sqlalchemy.orm import relationship
 
 from app.models import Base
 from app.utils.auth import generate_api_key
+from app.utils.date_utils import format_datetime_object
 
 class Admin(Base):
     __tablename__ = 'admins'
@@ -59,5 +60,15 @@ class Admin(Base):
             'name': self.full_name(),
             'email': self.email,
             'tel': self.phone_num,
-            'created_at': 
+            'created_at': format_datetime_object(self.created_at),
+            'last_logged_in': format_datetime_object(self.last_logged_in),
+            'birthday': self.formatted_birthday(),
+            'country': self.country + '-' + self.country_code,
+            'is_active': self.is_active,
+            'api_key': self.api_key,
+            'activated_at': self.activated_at,
+            'subscription_tier': self.subscription_tier,
+            'subscription_period': self.subscription_period,
+            'projects': self.project
         }
+        return ret

@@ -37,7 +37,7 @@ class UserController(HTTPMethodView):
             json: containing key `msg` with success info & email.
         """
 
-        for param in ['email', 'password', 'bday', 'firstName', 'lastName', 'phoneNum', 'project', 'permissions']:
+        for param in ['email', 'password', 'bday', 'firstName', 'lastName', 'project', 'permissions']:
             if request.json.get(param) == None:
                 return json({'error': '{} field cannot be blank!'.format(param)}, status=400)
 
@@ -55,7 +55,6 @@ class UserController(HTTPMethodView):
                 birthday=bday,
                 first_name=request.json.get('firstName'),
                 last_name=request.json.get('lastName'),
-                phone_num=request.json.get('phoneNum'),
                 project_id=request.json.get('project'),
                 _permissions=request.json.get('permissions')
             )
@@ -65,4 +64,10 @@ class UserController(HTTPMethodView):
         return json({'msg': 'Successfully created {}'.format(email)})
 
     async def delete(self, request):
-        pass
+        email = request.json.get('email')
+
+        with scoped_session() as session:
+            session.query(User).filter_by(email=email).delete()
+            session.commit()
+
+        return json({'msg': 'User with email {} was successfully deleted'.format(email)})

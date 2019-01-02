@@ -11,6 +11,8 @@ from sqlalchemy import (
 from sqlalchemy.orm import relationship
 
 from app.models import Base
+from app.utils.auth import generate_api_key
+from app.utils.date_utils import format_datetime_object
 
 class User(Base):
     __tablename__ = 'users'
@@ -18,9 +20,11 @@ class User(Base):
     id = Column(Integer, autoincrement=True, primary_key=True)
 
     # Authentication Attributes.
-    email = Column(String(255), nullable=False)
+    email = Column(String(255), unique=True, nullable=False)
     password = Column(String(500), nullable=True)
     password_salt = Column(String(100), nullable=True)
+
+    api_key = Column(String(45), default=generate_api_key, unique=True)
 
     created_at = Column(DateTime, default=datetime.datetime.utcnow)
     last_logged_in = Column(DateTime, nullable=True)
@@ -30,7 +34,6 @@ class User(Base):
     birthday = Column(Date, nullable=False)
     first_name = Column(String(35), nullable=False)
     last_name = Column(String(35), nullable=False)
-    phone_num = Column(String(50), nullable=False)
 
     # Permission Based Attributes.
     is_active = Column(Boolean, default=True)
@@ -56,3 +59,19 @@ class User(Base):
     def permissions(self):
         """ Return list of this user's permissions """
         return [permission for permission in self._permissions.split(';')]
+
+    def to_dict(self):
+        ret = {
+            'id': self.id,
+            'name': self.full_name(),
+            'email': self.email,
+            'created_at': format_datetime_object(self.created_at),
+            'last_logged_in': format_datetime_object(self.last_logged_in),
+            'birthday': self.formatted_birthday(),
+            'is_active': self.is_active,
+            'api_key': self.api_key,
+            'activated_at': self.activated_at,
+            'project_id': self.project_id,
+            'permissions': self.permissions()
+        }
+        return ret

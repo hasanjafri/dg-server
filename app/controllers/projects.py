@@ -8,8 +8,6 @@ from app.models.projects import Project
 
 class ProjectController(HTTPMethodView):
     """ Handles Project CRUD operations. """
-    
-    async def 
 
     async def get(self, request):
         pass
