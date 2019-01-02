@@ -1,8 +1,9 @@
 """ Module represents an Admin. """
+import datetime
+
 from sqlalchemy import (
     Column, String, Integer,
-    DateTime, Date, Boolean,
-    func
+    DateTime, Date, Boolean
 )
 
 from sqlalchemy.orm import relationship
@@ -21,9 +22,9 @@ class Admin(Base):
 
     api_key = Column(String(45), default=generate_api_key, unique=True)
 
-    created_at = Column(DateTime, server_default=func.now())
+    created_at = Column(DateTime, default=datetime.datetime.utcnow)
     last_logged_in = Column(DateTime, nullable=True)
-    last_updated = Column(DateTime, server_default=func.now(), onupdate=func.now())
+    last_updated = Column(DateTime, default=datetime.datetime.utcnow, onupdate=datetime.datetime.utcnow)
 
     birthday = Column(Date, nullable=False)
     first_name = Column(String(35), nullable=False)
@@ -33,7 +34,7 @@ class Admin(Base):
     country_code = Column(String(2), nullable=False)
 
     is_active = Column(Boolean, default=False)
-    activated_at = Column(DateTime, server_default=func.now())
+    activated_at = Column(DateTime, default=datetime.datetime.utcnow)
 
     subscription_tier = Column(Integer, nullable=False)
     subscription_period = Column(DateTime, nullable=False)

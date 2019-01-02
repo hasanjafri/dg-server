@@ -23,6 +23,12 @@ class AdminController(HTTPMethodView):
         bday_str = request.json.get('bday').split('-')
         bday = datetime.date(int(bday_str[0]), int(bday_str[1]), int(bday_str[2]))
 
+        subscription_period = request.json.get('period')
+        if subscription_period == '1':
+            subscription_end = datetime.datetime.utcnow() + datetime.timedelta(days=30)
+        elif subscription_period == '2':
+            subscription_end = datetime.datetime.utcnow() + datetime.timedelta(days=365)
+
         with scoped_session() as session:
             admin = Admin(
                 email=request.json.get('email'),
@@ -35,7 +41,7 @@ class AdminController(HTTPMethodView):
                 country=request.json.get('country'),
                 country_code=request.json.get('countryCode'),
                 subscription_tier=request.json.get('tier'),
-                subscription_period=request.json.get('period')
+                subscription_period=subscription_end
             )
             session.add(admin)
 
