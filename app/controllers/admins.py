@@ -15,10 +15,18 @@ class AdminController(HTTPMethodView):
         pass
     
     async def post(self, request):
+        """ Creates a new admin.
+        Args:
+            request (object): contains data pertaining request.
+        Returns:
+            json: containing key `msg` with success info & email.
+        """
+
         for param in ['email', 'password', 'firstName', 'lastName', 'phoneNum', 'country', 'countryCode', 'bday', 'tier', 'period']:
-            if request.json.get(param) == "":
-                return json({'error': '{} eafield cannot be blank!'.format(param)}, status=400)
+            if request.json.get(param) == None:
+                return json({'error': '{} field cannot be blank!'.format(param)}, status=400)
         
+        email = request.json.get('email')
         (salt, password) = create_password(request.json.get('password'))
         bday_str = request.json.get('bday').split('-')
         bday = datetime.date(int(bday_str[0]), int(bday_str[1]), int(bday_str[2]))
@@ -31,7 +39,7 @@ class AdminController(HTTPMethodView):
 
         with scoped_session() as session:
             admin = Admin(
-                email=request.json.get('email'),
+                email=email,
                 password=password,
                 password_salt=salt,
                 birthday=bday,
@@ -45,4 +53,14 @@ class AdminController(HTTPMethodView):
             )
             session.add(admin)
 
-        return json({'msg': 'Admin with email: {} was successfully created'.format(request.json.get('email'))})
+        return json({'msg': 'Admin with email: {} was successfully created'.format(email)})
+
+    async def delete(self, request):
+
+        email = request.json.get('email')
+
+        with scoped_session() as session:
+            session.query(Admin).filter_by(email=email).delete()
+            session.commit()
+            
+        return json({'msg': 'Admin with email {} was successfully deleted'.format(email)})

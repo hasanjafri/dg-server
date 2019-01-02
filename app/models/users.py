@@ -27,14 +27,14 @@ class User(Base):
     last_updated = Column(DateTime, default=datetime.datetime.utcnow, onupdate=datetime.datetime.utcnow)
 
     # Personal Attributes.
-    birthday = Column(Date, nullable=True)
-    first_name = Column(String(35), nullable=True)
-    last_name = Column(String(35), nullable=True)
-    phone_num = Column(String(50), nullable=True)
+    birthday = Column(Date, nullable=False)
+    first_name = Column(String(35), nullable=False)
+    last_name = Column(String(35), nullable=False)
+    phone_num = Column(String(50), nullable=False)
 
     # Permission Based Attributes.
-    is_active = Column(Boolean, default=False)
-    activated_at = Column(DateTime, nullable=True, default=None)
+    is_active = Column(Boolean, default=True)
+    activated_at = Column(DateTime, default=datetime.datetime.utcnow)
 
     # Relationships
     project_id = Column(Integer, ForeignKey('projects.id'))

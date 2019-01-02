@@ -1,4 +1,5 @@
 """ Users controller using Sanic Class based views. """
+import datetime
 
 from sanic.response import json
 from sanic.views import HTTPMethodView
@@ -35,12 +36,29 @@ class UserController(HTTPMethodView):
         Returns:
             json: containing key `msg` with success info & email.
         """
-        # Get email key from json request.
+
+        for param in ['email', 'password', 'bday', 'firstName', 'lastName', 'phoneNum', 'project', 'permissions']:
+            if request.json.get(param) == None:
+                return json({'error': '{} field cannot be blank!'.format(param)}, status=400)
+
         email = request.json.get('email')
+        (salt, password) = create_password(request.json.get('password'))
+        bday_str = request.json.get('bday').split('-')
+        bday = datetime.date(int(bday_str[0]), int(bday_str[1]), int(bday_str[2]))
 
         # Create new user.
         with scoped_session() as session:
-            user = User(email=email)
+            user = User(
+                email=request.json.get('email'),
+                password=password,
+                password_salt=salt,
+                birthday=bday,
+                first_name=request.json.get('firstName'),
+                last_name=request.json.get('lastName'),
+                phone_num=request.json.get('phoneNum'),
+                project_id=request.json.get('project'),
+                _permissions=request.json.get('permissions')
+            )
             session.add(user)
 
         # Return json response.
