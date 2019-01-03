@@ -23,6 +23,10 @@ def create_app():
         app.redis = await aioredis.create_redis_pool(os.environ.get('REDIS_URL'))
         session.init_app(app, interface=AIORedisSessionInterface(app.redis))
 
+    @app.route('/test')
+    async def test_session(request):
+        
+
     app.add_route(UserController.as_view(), '/api/user')
     app.add_route(AdminController.as_view(), '/api/admin')
     app.add_route(ProjectController.as_view(), '/api/project')
