@@ -2,6 +2,7 @@ init:
 	python -m venv venv; \
 	echo 'source venv/bin/activate' >> .env; \
 	echo 'export DATABASE_URL=""' >> .env; \
+	echo 'export REDIS_URL=""' >> .env; \
 	source ./venv/Scripts/Activate; \
 	pip install -r requirements.txt; \
 
