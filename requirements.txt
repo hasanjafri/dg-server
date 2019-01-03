@@ -1,5 +1,8 @@
 aiofiles==0.4.0
+aioredis==1.2.0
 alembic==1.0.5
+async-timeout==3.0.1
+hiredis==0.3.1
 httptools==0.0.11
 Mako==1.0.7
 manage.py==0.2.10
@@ -11,6 +14,8 @@ python-editor==1.0.3
 sanic==18.12.0
 Sanic-Cors==0.9.7
 Sanic-Plugins-Framework==0.6.5
+sanic-session==0.4.1
 six==1.12.0
 SQLAlchemy==1.2.15
+ujson==1.35
 websockets==6.0
