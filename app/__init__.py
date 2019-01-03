@@ -4,6 +4,7 @@ import os
 
 from sanic import Sanic
 from sanic_cors import CORS
+from sanic.response import text
 from sanic_session import Session, AIORedisSessionInterface
 
 def create_app():
@@ -20,12 +21,19 @@ def create_app():
 
     @app.listener('before_server_start')
     async def server_init(app, loop):
-        app.redis = await aioredis.create_redis_pool(os.environ.get('REDIS_URL'))
+        app.redis = await aioredis.create_redis_pool(('127.0.0.1', 6379))
         session.init_app(app, interface=AIORedisSessionInterface(app.redis))
 
     @app.route('/test')
     async def test_session(request):
-        
+        if not request['session'].get('foo'):
+            request['session']['foo'] = 0
+
+        request['session']['foo'] += 1
+
+        response = text(request['session']['foo'])
+
+        return response
 
     app.add_route(UserController.as_view(), '/api/user')
     app.add_route(AdminController.as_view(), '/api/admin')
