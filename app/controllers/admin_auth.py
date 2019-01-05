@@ -1,8 +1,9 @@
 import datetime
 
-from sanic.response import json
+from sanic.response import json, redirect
 from sanic.views import HTTPMethodView
 
+from app.controllers.projects import ProjectController
 from app.database import scoped_session, Session
 from app.models.admins import Admin
 from app.utils.auth import check_password
@@ -29,7 +30,7 @@ class AdminAuthController(HTTPMethodView):
             return json({'error': 'No session cookie found'})
         else:
             api_key = request['session'].get('DG_api_key')
-            
+        return redirect('/api/project')
 
     async def post(self, request):
         if not request['session'].get('DG_api_key'):

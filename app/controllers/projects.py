@@ -30,7 +30,14 @@ class ProjectController(HTTPMethodView):
         
 
     async def get(self, request):
-        pass
+        if not request['session'].get('DG_api_key'):
+            return json({'error': 'Unauthorized, please login again'}, status=405)
+        else:
+            api_key = request['session'].get('DG_api_key')
+            if await (self.valid_api_key(api_key)) == True:
+                admin = await self.get_admin_from_api_key(api_key)
+                with scoped_session() as session:
+                    session.query(Project).filter_by(admin_id=)
     
     async def post(self, request):
         for param in ['project_name', 'api_key']:
