@@ -37,7 +37,7 @@ class ProjectController(HTTPMethodView):
             if await (self.valid_api_key(api_key)) == True:
                 admin = await self.get_admin_from_api_key(api_key)
                 with scoped_session() as session:
-                    session.query(Project).filter_by(admin_id=)
+                    session.query(Project).filter_by(admin_id=admin.id)
     
     async def post(self, request):
         for param in ['project_name', 'api_key']:

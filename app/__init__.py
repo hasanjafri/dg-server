@@ -24,6 +24,11 @@ def create_app():
         app.redis = await aioredis.create_redis_pool(('127.0.0.1', 6379))
         session.init_app(app, interface=AIORedisSessionInterface(app.redis))
 
+    @app.listener('after_server_stop')
+    async def after_server_stop(app, loop):
+        app.redis.close()
+        await app.redis.wait_closed()
+
     @app.route('/test')
     async def test_session(request):
         if not request['session'].get('DG_api_key'):
