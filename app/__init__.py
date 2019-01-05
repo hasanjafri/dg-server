@@ -29,9 +29,10 @@ def create_app():
         if not request['session'].get('DG_api_key'):
             request['session']['DG_api_key'] = 0
 
-        request['session']['foo'] += 1
+        print(request['session'].get('DG_api_key'))
+        request['session']['DG_api_key'] += 1
 
-        response = text(request['session']['foo'])
+        response = text(request['session']['DG_api_key'])
 
         return response
 
