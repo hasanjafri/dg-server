@@ -16,26 +16,31 @@ class AdminAuthController(HTTPMethodView):
 
         return admin
 
-    async def register_admin_login(self, admin):
+    async def register_admin_login(self, api_key):
 
         with scoped_session() as session:
-            session.query(Admin).filter_by(id=admin.id, email=admin.email).update({'last_logged_in': datetime.datetime.utcnow()})
+            session.query(Admin).filter_by(api_key=api_key).update({'last_logged_in': datetime.datetime.utcnow()})
             session.commit()
 
         return 
 
-    async def get(self, request):
-        for param in ['email', 'password']:
-            if request.json.get(param) == None:
-                return json({'error': '{} field cannot be blank!'.format(param)}, status=400)
+    async def post(self, request):
+        if not request['session'].get('DG_api_key'):
+            for param in ['email', 'password']:
+                if request.json.get(param) == None:
+                    return json({'error': '{} field cannot be blank!'.format(param)}, status=400)
 
-        email = request.json.get('email')
-        raw_password = request.json.get('password')
+            email = request.json.get('email')
+            raw_password = request.json.get('password')
 
-        admin = await self.get_admin_by_email(email)
+            admin = await self.get_admin_by_email(email)
 
-        if check_password(raw_password.encode('utf-8'), admin.password_salt, admin.password):
-            await self.register_admin_login(admin)
-            return json(admin.to_dict())
+            if check_password(raw_password.encode('utf-8'), admin.password_salt, admin.password):
+                await self.register_admin_login(admin.api_key)
+                request['session']['DG_api_key'] = admin.api_key
+                return json({'msg': 'success'})
+            else:
+                return json({'error': 'Wrong email or password. Please try again'}, status=401)
         else:
-            return json({'error': 'Wrong email or password. Please try again'}, status=401)
+            api_key = request['session'].get('DG_api_key')
+            return self.register_admin_login(api_key)

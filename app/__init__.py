@@ -26,8 +26,8 @@ def create_app():
 
     @app.route('/test')
     async def test_session(request):
-        if not request['session'].get('foo'):
-            request['session']['foo'] = 0
+        if not request['session'].get('DG_api_key'):
+            request['session']['DG_api_key'] = 0
 
         request['session']['foo'] += 1
 
