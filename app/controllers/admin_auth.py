@@ -22,7 +22,14 @@ class AdminAuthController(HTTPMethodView):
             session.query(Admin).filter_by(api_key=api_key).update({'last_logged_in': datetime.datetime.utcnow()})
             session.commit()
 
-        return 
+        return
+
+    async def get(self, request):
+        if not request['session'].get('DG_api_key'):
+            return json({'error': 'No session cookie found'})
+        else:
+            api_key = request['session'].get('DG_api_key')
+            
 
     async def post(self, request):
         if not request['session'].get('DG_api_key'):
@@ -41,6 +48,3 @@ class AdminAuthController(HTTPMethodView):
                 return json({'msg': 'success'})
             else:
                 return json({'error': 'Wrong email or password. Please try again'}, status=401)
-        else:
-            api_key = request['session'].get('DG_api_key')
-            return self.register_admin_login(api_key)
