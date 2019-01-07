@@ -28,6 +28,7 @@ class Admin(Base):
     last_updated = Column(DateTime, default=datetime.datetime.utcnow, onupdate=datetime.datetime.utcnow)
 
     birthday = Column(Date, nullable=False)
+    security_answer = Column(String, nullable=False)
     first_name = Column(String(35), nullable=False)
     last_name = Column(String(35), nullable=False)
     phone_num = Column(String(50), nullable=False)

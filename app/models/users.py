@@ -4,7 +4,7 @@ import datetime
 
 from sqlalchemy import (
     Column, String, Integer,
-    DateTime, Date, Boolean,
+    DateTime, Boolean,
     ForeignKey
 )
 
@@ -31,7 +31,7 @@ class User(Base):
     last_updated = Column(DateTime, default=datetime.datetime.utcnow, onupdate=datetime.datetime.utcnow)
 
     # Personal Attributes.
-    birthday = Column(Date, nullable=False)
+    security_answer = Column(String, nullable=False)
     first_name = Column(String(35), nullable=False)
     last_name = Column(String(35), nullable=False)
 

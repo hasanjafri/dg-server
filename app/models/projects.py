@@ -18,6 +18,7 @@ class Project(Base):
 
     project_name = Column(String, nullable=False)
     categories = Column(PickleType, nullable=True)
+    address = Column(String, nullable=False)
 
     admin_id = Column(Integer, ForeignKey('admins.id'))
     admin = relationship('Admin', back_populates="project")
