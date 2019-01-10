@@ -11,6 +11,8 @@ services:
       - "postgres"
     ports:
       - 6969:6969
+    environment:
+      - DATABASE_URL=${DATABASE_URL}
 
   postgres:
     image: "library/postgres:11.1"
