@@ -33,13 +33,12 @@ def create_app():
     async def test_session(request):
         if not request['session'].get('DG_api_key'):
             request['session']['DG_api_key'] = 0
-
-        print(request['session'].get('DG_api_key'))
-        request['session']['DG_api_key'] += 1
-
-        response = text(request['session']['DG_api_key'])
-
-        return response
+        else:
+            if app.redis.get_session(request['session']['DG_api_key']) == 0:
+                response = text(request['session']['DG_api_key'])
+                return response
+            else:
+                return {"error": "Unauthenticated, please login again."}
 
     app.add_route(UserController.as_view(), '/api/user')
     app.add_route(AdminController.as_view(), '/api/admin')
