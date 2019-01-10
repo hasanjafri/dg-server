@@ -1,0 +1,21 @@
+version: "3"
+services:
+
+  appserver:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - "./app:/app"
+    links:
+      - "postgres"
+    ports:
+      - 6969:6969
+
+  postgres:
+    image: "library/postgres:11.1"
+    environment:
+      POSTGRES_USER: "dgadmin"
+      POSTGRES_PASSWORD: "dgserver33"
+    expose:
+      - "5432"
