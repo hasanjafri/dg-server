@@ -7,8 +7,6 @@ from sanic_cors import CORS
 from sanic.response import text
 from sanic_session import Session, AIORedisSessionInterface
 
-from app.scripts.initdb import createDb
-
 def create_app():
     """ Function for bootstrapping sanic app. """
 
@@ -50,5 +48,4 @@ def create_app():
     app.go_fast(host='0.0.0.0', port=6969, debug=True)
 
 if __name__ == "__main__":
-    createDb()
     create_app()

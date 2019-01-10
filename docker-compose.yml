@@ -19,6 +19,7 @@ services:
   postgres:
     image: "library/postgres:11.1"
     environment:
+      POSTGRES_DB: "datagramDb"
       POSTGRES_USER: "dgadmin"
       POSTGRES_PASSWORD: "dgserver33"
     expose:
