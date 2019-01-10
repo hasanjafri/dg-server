@@ -3,7 +3,7 @@
 ENTRYPOINT="$*"
 
 if [ -z "$ENTRYPOINT" ]; then
-    python /app/__init__.py
+    python /src/manage.py run
 else
     /bin/sh -c "$ENTRYPOINT"
 fi
