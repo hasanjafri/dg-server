@@ -21,7 +21,7 @@ def create_app():
 
     @app.listener('before_server_start')
     async def server_init(app, loop):
-        app.redis = await aioredis.create_redis_pool(os.environ["REDIS_HOST"])
+        app.redis = await aioredis.create_redis_pool((os.environ["REDIS_HOST"], 6379))
         session.init_app(app, interface=AIORedisSessionInterface(app.redis))
 
     @app.listener('after_server_stop')
