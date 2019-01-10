@@ -33,6 +33,7 @@ def create_app():
     async def test_session(request):
         if not request['session'].get('DG_api_key'):
             request['session']['DG_api_key'] = 0
+            return text(request['session']['DG_api_key'])
         else:
             if app.redis.get_session(request['session']['DG_api_key']) == 0:
                 response = text(request['session']['DG_api_key'])
