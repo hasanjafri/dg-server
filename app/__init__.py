@@ -7,6 +7,8 @@ from sanic_cors import CORS
 from sanic.response import text
 from sanic_session import Session, AIORedisSessionInterface
 
+from app.scripts.initdb import createDb
+
 def create_app():
     """ Function for bootstrapping sanic app. """
 
@@ -21,7 +23,7 @@ def create_app():
 
     @app.listener('before_server_start')
     async def server_init(app, loop):
-        app.redis = await aioredis.create_redis_pool(('127.0.0.1', 6379))
+        app.redis = await aioredis.create_redis_pool(os.environ["REDIS_HOST"])
         session.init_app(app, interface=AIORedisSessionInterface(app.redis))
 
     @app.listener('after_server_stop')
@@ -48,4 +50,5 @@ def create_app():
     app.go_fast(host='0.0.0.0', port=6969, debug=True)
 
 if __name__ == "__main__":
+    createDb()
     create_app()
