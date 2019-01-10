@@ -27,9 +27,6 @@ services:
 
   redis:
     image: "library/redis:5.0.3"
-    volumes:
-      - redis_data:/data
-
-  volumes:
-    redis_data:
+    expose:
+      - "6379"
     
