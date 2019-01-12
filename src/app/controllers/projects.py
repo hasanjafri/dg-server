@@ -40,11 +40,12 @@ class ProjectController(HTTPMethodView):
                     session.query(Project).filter_by(admin_id=admin.id)
     
     async def post(self, request):
-        for param in ['project_name', 'api_key']:
+        for param in ['project_name', 'project_address']:
             if request.json.get(param) == None:
                 return json({'error': 'No {} provided for this request!'.format(param)}, status=400)
 
         project_name = request.json.get('project_name')
+        project_address = request.json.get('project_address')
         api_key = request.json.get('api_key')
 
         if await self.valid_api_key(api_key) == True:
