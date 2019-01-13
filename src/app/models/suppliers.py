@@ -26,5 +26,8 @@ class Supplier(Base):
 
     def to_dict(self):
         ret = {
-            
+            'id': self.id,
+            'name': self.name,
+            'food_items': [food_item.to_dict() for food_item in self.food_items]
         }
+        return ret

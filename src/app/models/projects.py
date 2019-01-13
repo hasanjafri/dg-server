@@ -36,3 +36,13 @@ class Project(Base):
 
     def suppliers(self):
         return self._suppliers.split(';')
+
+    def to_dict(self):
+        ret = {
+            'id': self.id,
+            'project_name': self.project_name,
+            'address': self.address,
+            'postal_code': self.postal_code,
+            'last_updated': self.last_updated
+        }
+        return ret

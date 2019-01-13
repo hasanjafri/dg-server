@@ -32,3 +32,16 @@ class InventoryProduct(Base):
     def __repr__(self):
         """ Show product object info. """
         return '<Product: {}>'.format(self.product_name)
+
+    def to_dict(self):
+        ret = {
+            'id': self.id,
+            'sku': self.sku,
+            'product_name': self.product_name,
+            'unit_size': self.unit_size,
+            'measurement_unit': self.measurement_unit,
+            'quantity': self.quantity,
+            'cost': self.cost,
+            'supplier': self.supplier.to_dict(),
+        }
+        return ret
