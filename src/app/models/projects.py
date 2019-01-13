@@ -18,7 +18,7 @@ class Project(Base):
 
     project_name = Column(String, nullable=False)
     categories = Column(PickleType, nullable=True)
-    _suppliers = Column(PickleType, nullable=True)
+    _suppliers = Column(String, nullable=True)
     address = Column(String, nullable=False)
     postal_code = Column(String, nullable=False)
 
@@ -35,4 +35,4 @@ class Project(Base):
         return '<Project: {}>'.format(self.project_name)
 
     def suppliers(self):
-        return []
+        return self._suppliers.split(';')

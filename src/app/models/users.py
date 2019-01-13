@@ -54,7 +54,7 @@ class User(Base):
 
     def permissions(self):
         """ Return list of this user's permissions """
-        return [permission for permission in self._permissions.split(';')]
+        return self._permissions.split(';')
 
     def to_dict(self):
         ret = {
