@@ -15,7 +15,7 @@ class ProjectController(HTTPMethodView):
             admin = session.query(Admin).filter_by(api_key=api_key).one()
 
         if admin.is_active == True:
-            return True
+            return admin
         else:
             return False
 
@@ -40,29 +40,34 @@ class ProjectController(HTTPMethodView):
                     session.query(Project).filter_by(admin_id=admin.id)
     
     async def post(self, request):
-        for param in ['project_name', 'project_address']:
-            if request.json.get(param) == None:
-                return json({'error': 'No {} provided for this request!'.format(param)}, status=400)
-
-        project_name = request.json.get('project_name')
-        project_address = request.json.get('project_address')
-        api_key = request.json.get('api_key')
-
-        if await self.valid_api_key(api_key) == True:
-            admin = await self.get_admin_from_api_key(api_key)
-            admin_id = admin.id
-
-            with scoped_session() as session:
-                project = Project(
-                    project_name=project_name,
-                    admin_id=admin_id,
-                    admin=admin
-                )
-                session.add(project)
-
-            return json({'msg': 'Project {} was succesfully added!'.format(project_name)})
+        if not request['session'].get('DG_api_key'):
+            return json({'error': 'Unauthenticated'})
         else:
-            return json({'error': 'API Key: {} is invalid'.format(api_key)}, status=400)
+            api_key = request['session'].get('DG_api_key')
+            for param in ['project_name', 'project_address', 'postal_code']:
+                if request.json.get(param) == None:
+                    return json({'error': 'No {} provided for this request!'.format(param)}, status=400)
+
+            project_name = request.json.get('project_name')
+            project_address = request.json.get('project_address')
+            postal_code = request.json.get('postal_code')
+
+            admin = await self.valid_api_key(api_key)
+
+            if admin != False:
+                with scoped_session() as session:
+                    project = Project(
+                        project_name=project_name,
+                        admin_id=admin.id,
+                        admin=admin,
+                        address=project_address,
+                        postal_code=postal_code
+                    )
+                    session.add(project)
+
+                return json({'msg': 'Project {} was succesfully added!'.format(project_name)})
+            else:
+                return json({'error': 'API Key: {} is invalid'.format(api_key)}, status=400)
 
     async def delete(self, request):
         for param in ['project_name', 'api_key', 'project_id']:
