@@ -6,6 +6,7 @@ from sanic.views import HTTPMethodView
 
 from app.database import scoped_session, Session
 from app.models.admins import Admin
+from app.models.projects import Project
 from app.models.users import User
 from app.utils.auth import create_password
 
@@ -37,32 +38,33 @@ class UserController(HTTPMethodView):
         Returns:
             json: containing key `msg` with success info & email.
         """
+        if not request['session'].get('DG_api_key'):
+            return json({'error': 'Unauthenticated'})
+        else:
+            for param in ['username', 'password', 'project', 'permissions']:
+                if request.json.get(param) == None:
+                    return json({'error': '{} field cannot be blank!'.format(param)}, status=400)
 
-        for param in ['email', 'password', 'bday', 'firstName', 'lastName', 'project', 'permissions']:
-            if request.json.get(param) == None:
-                return json({'error': '{} field cannot be blank!'.format(param)}, status=400)
+            username = request.json.get('username')
+            (salt, password) = create_password(request.json.get('password'))
 
-        email = request.json.get('email')
-        (salt, password) = create_password(request.json.get('password'))
-        bday_str = request.json.get('bday').split('-')
-        bday = datetime.date(int(bday_str[0]), int(bday_str[1]), int(bday_str[2]))
+            # Create new user.
+            with scoped_session() as session:
+                user = User(
+                    user_name=username,
+                    password=password,
+                    password_salt=salt,
+                    project_id=request.json.get('project_id'),
+                    project=project,
+                    _permissions=request.json.get('permissions')
+                )
+                session.add(user)
 
-        # Create new user.
-        with scoped_session() as session:
-            user = User(
-                email=request.json.get('email'),
-                password=password,
-                password_salt=salt,
-                birthday=bday,
-                first_name=request.json.get('firstName'),
-                last_name=request.json.get('lastName'),
-                project_id=request.json.get('project'),
-                _permissions=request.json.get('permissions')
-            )
-            session.add(user)
+            # Return json response.
+            return json({'msg': 'Successfully created {}'.format(email)})
 
-        # Return json response.
-        return json({'msg': 'Successfully created {}'.format(email)})
+    async def get_project_by_id(self, project_id):
+
 
     async def delete(self, request):
         email = request.json.get('email')
