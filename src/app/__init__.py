@@ -4,7 +4,7 @@ import os
 
 from sanic import Sanic
 from sanic_cors import CORS
-from sanic.response import text
+from sanic.response import text, json
 from sanic_session import Session, AIORedisSessionInterface
 
 def create_app():
@@ -31,15 +31,15 @@ def create_app():
 
     @app.route('/test')
     async def test_session(request):
-        if not request['session'].get('DG_api_key'):
-            request['session']['DG_api_key'] = 0
-            return text(request['session']['DG_api_key'])
+        if request['session'].get('DG_api_key'):
+            return text('Authenticated')
         else:
-            if app.redis.get_session(request['session']['DG_api_key']) == 0:
-                response = text(request['session']['DG_api_key'])
-                return response
-            else:
-                return {"error": "Unauthenticated, please login again."}
+            return text('Unauthenticated')             
+
+    @app.route('/set')
+    async def set_session(request):
+        request['session']['DG_api_key'] = 'hey123'
+        return text('hey123')
 
     app.add_route(UserController.as_view(), '/api/user')
     app.add_route(AdminController.as_view(), '/api/admin')

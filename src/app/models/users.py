@@ -20,7 +20,7 @@ class User(Base):
     id = Column(Integer, autoincrement=True, primary_key=True)
 
     # Authentication Attributes.
-    email = Column(String(255), unique=True, nullable=False)
+    user_name = Column(String(255), unique=True, nullable=False)
     password = Column(String(500), nullable=True)
     password_salt = Column(String(100), nullable=True)
 
@@ -29,11 +29,6 @@ class User(Base):
     created_at = Column(DateTime, default=datetime.datetime.utcnow)
     last_logged_in = Column(DateTime, nullable=True)
     last_updated = Column(DateTime, default=datetime.datetime.utcnow, onupdate=datetime.datetime.utcnow)
-
-    # Personal Attributes.
-    security_answer = Column(String, nullable=False)
-    first_name = Column(String(35), nullable=False)
-    last_name = Column(String(35), nullable=False)
 
     # Permission Based Attributes.
     is_active = Column(Boolean, default=True)

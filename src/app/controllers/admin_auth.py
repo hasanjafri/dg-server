@@ -49,3 +49,5 @@ class AdminAuthController(HTTPMethodView):
                 return json({'msg': 'success'})
             else:
                 return json({'error': 'Wrong email or password. Please try again'}, status=401)
+        else:
+            return json({'error': ''})
