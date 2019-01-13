@@ -26,3 +26,9 @@ class InventoryProduct(Base):
 
     supplier_id = Column(Integer, ForeignKey('supplier.id'))
     supplier = relationship("Supplier", back_populates="food_items")
+
+    created_at = Column(DateTime, default=datetime.datetime.utcnow)
+
+    def __repr__(self):
+        """ Show product object info. """
+        return '<Product: {}>'.format(self.product_name)
