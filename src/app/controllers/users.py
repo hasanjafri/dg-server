@@ -47,24 +47,30 @@ class UserController(HTTPMethodView):
 
             username = request.json.get('username')
             (salt, password) = create_password(request.json.get('password'))
+            project = self.get_project_by_id(request.json.get('project_id'))
 
-            # Create new user.
-            with scoped_session() as session:
-                user = User(
-                    user_name=username,
-                    password=password,
-                    password_salt=salt,
-                    project_id=request.json.get('project_id'),
-                    project=project,
-                    _permissions=request.json.get('permissions')
-                )
-                session.add(user)
+            if project != None:
+                with scoped_session() as session:
+                    user = User(
+                        user_name=username,
+                        password=password,
+                        password_salt=salt,
+                        project_id=project.id,
+                        project=project,
+                        _permissions=request.json.get('permissions')
+                    )
+                    session.add(user)
 
-            # Return json response.
-            return json({'msg': 'Successfully created {}'.format(email)})
+                # Return json response.
+                return json({'msg': 'Successfully created User: {}'.format(username)})
+            else:
+                return json({'error': 'Project with id: {} does not exist'.format(str(project.id))})
 
     async def get_project_by_id(self, project_id):
+        with scoped_session() as session:
+            project = session.query(Project).filter_by(id=project_id).one()
 
+        return project
 
     async def delete(self, request):
         email = request.json.get('email')

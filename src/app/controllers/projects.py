@@ -19,12 +19,6 @@ class ProjectController(HTTPMethodView):
         else:
             return False
 
-    async def get_admin_from_api_key(self, api_key):
-        with scoped_session() as session:
-            admin = session.query(Admin).filter_by(api_key=api_key).one()
-            
-        return admin
-
     async def check_api_key_corresponds_to_id(self, api_key, project_id, project_name):
         admin = await self.get_admin_from_api_key(api_key)
         
