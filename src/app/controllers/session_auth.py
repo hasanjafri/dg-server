@@ -21,7 +21,7 @@ class SessionAuthController(HTTPMethodView):
     async def post(self, request):
         for param in ['username', 'password', 'account_type']:
             if request.json.get(param) == None:
-                return json({'error': '{} field cannot be blank'.format(param)})
+                return json({'error': '{} field cannot be blank'.format(param)}, status=400)
 
         username = request.json.get('email')
         raw_password = request.json.get('password')
@@ -32,6 +32,11 @@ class SessionAuthController(HTTPMethodView):
             if check_password(raw_password.encode('utf-8'), user.password_salt, user.password):
                 await self.register_user_login(account_type, username)
                 request['session']['DG_api_key'] = user.api_key
+                return json({'msg': 'success'})
+            else:
+                return json({'error': 'Wrong email or password'}, status=401)
+        else:
+            return json({'error': 'No user found with this username'}, status=400)
 
     async def get_user_by_username(self, account_type, username):
         if account_type == 'user':
