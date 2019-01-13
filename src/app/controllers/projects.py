@@ -67,7 +67,7 @@ class ProjectController(HTTPMethodView):
 
                 return json({'msg': 'Project {} was succesfully added!'.format(project_name)})
             else:
-                return json({'error': 'API Key: {} is invalid'.format(api_key)}, status=400)
+                return json({'error': 'Unauthenticated'}, status=400)
 
     async def delete(self, request):
         for param in ['project_name', 'api_key', 'project_id']:

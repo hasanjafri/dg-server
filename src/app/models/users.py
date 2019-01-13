@@ -21,8 +21,8 @@ class User(Base):
 
     # Authentication Attributes.
     user_name = Column(String(255), unique=True, nullable=False)
-    password = Column(String(500), nullable=True)
-    password_salt = Column(String(100), nullable=True)
+    password = Column(String(500), nullable=False)
+    password_salt = Column(String(100), nullable=False)
 
     api_key = Column(String(45), default=generate_api_key, unique=True)
 

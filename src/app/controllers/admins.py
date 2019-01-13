@@ -18,9 +18,6 @@ class AdminController(HTTPMethodView):
                 return True
             else:
                 return False
-
-    async def get(self, request):
-        pass
     
     async def post(self, request):
         """ Creates a new admin.
@@ -30,7 +27,7 @@ class AdminController(HTTPMethodView):
             json: containing key `msg` with success info & email.
         """
 
-        for param in ['email', 'password', 'firstName', 'lastName', 'phoneNum', 'country', 'countryCode', 'bday', 'tier', 'period']:
+        for param in ['email', 'password', 'firstName', 'lastName', 'phoneNum', 'country', 'countryCode', 'bday', 'tier', 'period', 'security_answer']:
             if request.json.get(param) == None:
                 return json({'error': '{} field cannot be blank!'.format(param)}, status=400)
         
@@ -57,7 +54,8 @@ class AdminController(HTTPMethodView):
                 country=request.json.get('country'),
                 country_code=request.json.get('countryCode'),
                 subscription_tier=request.json.get('tier'),
-                subscription_period=subscription_end
+                subscription_period=subscription_end,
+                security_answer=request.json.get('security_answer')
             )
             session.add(admin)
 
