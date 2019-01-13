@@ -33,10 +33,11 @@ class User(Base):
     # Permission Based Attributes.
     is_active = Column(Boolean, default=True)
     activated_at = Column(DateTime, default=datetime.datetime.utcnow)
+    permissions = Column(String, default='')
 
     # Relationships
-    project_id = Column(Integer, ForeignKey('projects.id'))
-    _permissions = Column(String, default='')
+    project_id = Column(Integer, ForeignKey('project.id'))
+    project = Column("Project", back_populates="users")
 
     # Methods
     def __repr__(self):

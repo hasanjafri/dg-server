@@ -22,10 +22,10 @@ class Project(Base):
     address = Column(String, nullable=False)
     postal_code = Column(String, nullable=False)
 
-    admin_id = Column(Integer, ForeignKey('admins.id'))
+    admin_id = Column(Integer, ForeignKey('admin.id'))
     admin = relationship('Admin', back_populates="project")
 
-    users = relationship('User')
+    users = relationship('User', back_populates="project")
 
     created_at = Column(DateTime, default=datetime.datetime.utcnow)
     last_updated = Column(DateTime, default=datetime.datetime.utcnow, onupdate=datetime.datetime.utcnow)
