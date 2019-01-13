@@ -18,7 +18,7 @@ class Project(Base):
 
     project_name = Column(String, nullable=False)
     categories = Column(PickleType, nullable=True)
-    suppliers = Column(PickleType, nullable=True)
+    _suppliers = Column(PickleType, nullable=True)
     address = Column(String, nullable=False)
     postal_code = Column(String, nullable=False)
 
@@ -33,3 +33,6 @@ class Project(Base):
     def __repr__(self):
         """ Show project object info. """
         return '<Project: {}>'.format(self.project_name)
+
+    def suppliers(self):
+        return []

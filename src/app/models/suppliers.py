@@ -19,3 +19,12 @@ class Supplier(Base):
 
     created_at = Column(DateTime, default=datetime.datetime.utcnow)
     last_updated = Column(DateTime, default=datetime.datetime.utcnow, onupdate=datetime.datetime.utcnow)
+
+    def __repr__(self):
+        """ Show supplier object info. """
+        return '<Supplier: {}>'.format(self.name)
+
+    def to_dict(self):
+        ret = {
+            
+        }
