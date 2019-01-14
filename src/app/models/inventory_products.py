@@ -24,7 +24,7 @@ class InventoryProduct(Base):
     quantity = Column(Integer, nullable=False)
     cost = Column(Float, nullable=False)
 
-    supplier_id = Column(Integer, ForeignKey('supplier.id'))
+    supplier_id = Column(Integer, ForeignKey('suppliers.id'))
     supplier = relationship("Supplier", back_populates="food_items")
 
     created_at = Column(DateTime, default=datetime.datetime.utcnow)

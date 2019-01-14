@@ -22,7 +22,7 @@ class Project(Base):
     address = Column(String, nullable=False)
     postal_code = Column(String, nullable=False)
 
-    admin_id = Column(Integer, ForeignKey('admin.id'))
+    admin_id = Column(Integer, ForeignKey('admins.id'))
     admin = relationship('Admin', back_populates="project")
 
     users = relationship('User', back_populates="project")

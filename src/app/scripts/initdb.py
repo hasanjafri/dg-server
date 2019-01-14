@@ -9,3 +9,8 @@ def createDb():
         Base.metadata.create_all(db_engine)
     except Exception:
         raise
+
+def clearDb():
+    db_engine = create_engine(os.environ['DATABASE_URL'], echo=True, connect_args={'connect_timeout': 10})
+    try:
+        

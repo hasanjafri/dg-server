@@ -11,3 +11,5 @@ Base = declarative_base()
 from app.models.users import User
 from app.models.admins import Admin
 from app.models.projects import Project
+from app.models.suppliers import Supplier
+from app.models.inventory_products import InventoryProduct

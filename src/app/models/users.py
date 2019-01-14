@@ -36,8 +36,8 @@ class User(Base):
     _permissions = Column(String, default='')
 
     # Relationships
-    project_id = Column(Integer, ForeignKey('project.id'))
-    project = Column("Project", back_populates="users")
+    project_id = Column(Integer, ForeignKey('projects.id'))
+    project = relationship("Project", back_populates="users")
 
     # Methods
     def __repr__(self):
