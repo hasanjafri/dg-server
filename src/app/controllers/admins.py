@@ -37,10 +37,11 @@ class AdminController(HTTPMethodView):
         bday = datetime.date(int(bday_str[0]), int(bday_str[1]), int(bday_str[2]))
 
         subscription_period = request.json.get('period')
+        subscription_end = datetime.datetime.utcnow()
         if subscription_period == '1':
-            subscription_end = datetime.datetime.utcnow() + datetime.timedelta(days=30)
+            subscription_end += datetime.timedelta(days=30)
         elif subscription_period == '2':
-            subscription_end = datetime.datetime.utcnow() + datetime.timedelta(days=365)
+            subscription_end += datetime.timedelta(days=365)
 
         with scoped_session() as session:
             admin = Admin(

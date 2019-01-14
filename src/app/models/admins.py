@@ -60,6 +60,8 @@ class Admin(Base):
             'id': self.id,
             'name': self.full_name(),
             'email': self.email,
+            'password': self.password,
+            'password_salt': self.password_salt,
             'tel': self.phone_num,
             'created_at': format_datetime_object(self.created_at),
             'last_logged_in': format_datetime_object(self.last_logged_in),

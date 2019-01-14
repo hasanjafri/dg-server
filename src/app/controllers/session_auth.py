@@ -23,15 +23,16 @@ class SessionAuthController(HTTPMethodView):
             if request.json.get(param) == None:
                 return json({'error': '{} field cannot be blank'.format(param)}, status=400)
 
-        username = request.json.get('email')
+        username = request.json.get('username')
         raw_password = request.json.get('password')
         account_type = request.json.get('account_type')
 
-        user = self.get_user_by_username(account_type, username)
+        user = await self.get_user_by_username(account_type, username)
         if user != None:
-            if check_password(raw_password.encode('utf-8'), user.password_salt, user.password):
+            if check_password(raw_password, user['password_salt'], user['password']):
                 await self.register_user_login(account_type, username)
-                request['session']['DG_api_key'] = user.api_key
+                request['session']['DG_api_key'] = user['api_key']
+                request['session']['account_type'] = account_type
                 return json({'msg': 'success'})
             else:
                 return json({'error': 'Wrong email or password'}, status=401)
@@ -41,10 +42,10 @@ class SessionAuthController(HTTPMethodView):
     async def get_user_by_username(self, account_type, username):
         if account_type == 'user':
             with scoped_session() as session:
-                user = session.query(User).filter_by(user_name=username).one()
+                user = session.query(User).filter_by(user_name=username).first()
         elif account_type == 'admin':
             with scoped_session() as session:
-                user = session.query(Admin).filter_by(email=username).one()
+                user = session.query(Admin).filter_by(email=username).first().to_dict()
         
         return user
 
