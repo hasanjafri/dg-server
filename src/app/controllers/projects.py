@@ -6,32 +6,47 @@ from sanic.views import HTTPMethodView
 from app.database import scoped_session, Session
 from app.models.admins import Admin
 from app.models.projects import Project
+from app.models.users import User
 
 class ProjectController(HTTPMethodView):
     """ Handles Project CRUD operations. """
 
-    async def valid_api_key(self, api_key):
-        with scoped_session() as session:
-            admin = session.query(Admin).filter_by(api_key=api_key).one()
-
-        if admin.is_active == True:
-            return admin
+    async def valid_api_key(self, api_key, account_type):
+        if account_type == 'admin':
+            with scoped_session() as session:
+                admin = session.query(Admin).filter_by(api_key=api_key).first()
+                if admin != None:
+                    if admin.is_active == True:
+                        return admin.id
+                    else:
+                        return None
+                else:
+                    return None
+        elif account_type == 'user':
+            with scoped_session() as session:
+                user = session.query(User).filter_by(api_key=api_key).first()
+                if user != None:
+                    if user.is_active == True:
+                        return user.project_id
+                    else:
+                        return None
+                else:
+                    return None
         else:
-            return False
-
-    async def check_api_key_corresponds_to_id(self, api_key, project_id, project_name):
-        admin = await self.get_admin_from_api_key(api_key)
-        
+            return None
 
     async def get(self, request):
         if not request['session'].get('DG_api_key'):
             return json({'error': 'Unauthorized, please login again'}, status=405)
         else:
             api_key = request['session'].get('DG_api_key')
-            if await (self.valid_api_key(api_key)) == True:
-                admin = await self.get_admin_from_api_key(api_key)
-                with scoped_session() as session:
-                    session.query(Project).filter_by(admin_id=admin.id)
+            account_type = request['session'].get('account_type')
+            get_id = await self.valid_api_key(api_key, account_type)
+            if get_id != None:
+                if account_type == 'admin':
+                    with scoped_session() as session:
+                        projects = session.query(Project).filter_by(admin_id=get_id).all()
+                        
     
     async def post(self, request):
         if not request['session'].get('DG_api_key'):
