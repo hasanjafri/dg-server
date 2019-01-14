@@ -12,7 +12,7 @@ def create_app():
 
     app = Sanic(__name__)
     session = Session()
-    CORS(app, automatic_options=True)
+    CORS(app, automatic_options=True, supports_credentials=True, origins="http://localhost:3000")
 
     # Register Blueprints/Views.
     from app.controllers.users import UserController
