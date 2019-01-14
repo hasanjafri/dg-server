@@ -45,8 +45,12 @@ class ProjectController(HTTPMethodView):
             if get_id != None:
                 if account_type == 'admin':
                     with scoped_session() as session:
-                        projects = session.query(Project).filter_by(admin_id=get_id).all()
-                        
+                        projects = session.query(Project).filter_by(admin_id=get_id)
+                        if projects != None:
+                            project_list = [project.to_dict() for project in projects]
+                            return json({'projects': project_list}, 200)
+                        else:
+                            return json({'projects': []})
     
     async def post(self, request):
         if not request['session'].get('DG_api_key'):
