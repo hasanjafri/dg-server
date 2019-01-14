@@ -13,7 +13,7 @@ from app.utils.auth import generate_api_key
 from app.utils.date_utils import format_datetime_object
 
 class InventoryProduct(Base):
-    __table__ = 'inventory_products'
+    __tablename__ = 'inventory_products'
 
     id = Column(Integer, autoincrement=True, primary_key=True)
 
