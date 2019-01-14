@@ -59,7 +59,7 @@ class AdminController(HTTPMethodView):
             )
             session.add(admin)
 
-        return json({'msg': 'Admin with email: {} was successfully created'.format(email)})
+        return json({'success': 'true'})
 
     async def delete(self, request):
 
