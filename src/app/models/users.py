@@ -66,7 +66,7 @@ class User(Base):
             'is_active': self.is_active,
             'api_key': self.api_key,
             'activated_at': self.activated_at,
-            'project_id': self.project_id,
+            'project': self.project.to_dict(),
             'permissions': self.permissions()
         }
         return ret

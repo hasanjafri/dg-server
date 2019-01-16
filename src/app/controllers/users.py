@@ -35,7 +35,13 @@ class UserController(HTTPMethodView):
                 admin_id = self.valid_api_key(api_key)
                 if admin_id != None:
                     with scoped_session() as session:
-                        projects = 
+                        projects = session.query(Project).filter_by(admin_id=admin_id)
+                        if projects != None:
+                            return json({'users': [project.users_list() for project in projects]})
+                        else:
+                            return json({'users': []})
+            else:
+                return json({'error': 'Unauthorized, please login again'}, status=405)
 
     async def post(self, request):
         """ Creates a new user based on the `email` key
