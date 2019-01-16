@@ -63,7 +63,6 @@ class User(Base):
             'email': self.email,
             'created_at': format_datetime_object(self.created_at),
             'last_logged_in': format_datetime_object(self.last_logged_in),
-            'birthday': self.formatted_birthday(),
             'is_active': self.is_active,
             'api_key': self.api_key,
             'activated_at': self.activated_at,

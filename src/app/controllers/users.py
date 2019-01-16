@@ -26,10 +26,16 @@ class UserController(HTTPMethodView):
              json: containing list of users under the `users` key.
          """
         # Gets all users in DB.
-        with scoped_session() as session:
-            stmt = User.__table__.select()
-            users = [dict(u) for u in session.execute(stmt)]
-        return json({'users': users})
+        if not request['session'].get('DG_api_key'):
+            return json({'error': 'Unauthorized, please login again'}, status=405)
+        else:
+            api_key = request['session'].get('DG_api_key')
+            account_type = request['session'].get('account_type')
+            if account_type == 'admin':
+                admin_id = self.valid_api_key(api_key)
+                if admin_id != None:
+                    with scoped_session() as session:
+                        projects = 
 
     async def post(self, request):
         """ Creates a new user based on the `email` key
@@ -80,3 +86,14 @@ class UserController(HTTPMethodView):
             session.commit()
 
         return json({'msg': 'User with email {} was successfully deleted'.format(email)})
+
+    async def valid_api_key(self, api_key):
+        with scoped_session() as session:
+            admin = session.query(Admin).filter_by(api_key=api_key).first()
+            if admin != None:
+                if admin.is_active == True:
+                    return admin.id
+                else:
+                    return None
+            else:
+                return None

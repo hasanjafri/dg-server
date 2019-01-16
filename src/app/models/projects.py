@@ -47,3 +47,6 @@ class Project(Base):
             'num_users': len(self.users)
         }
         return ret
+
+    def users_list(self):
+        return [user.to_dict() for user in self.users]
