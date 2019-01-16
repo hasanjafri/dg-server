@@ -43,6 +43,7 @@ class Project(Base):
             'project_name': self.project_name,
             'address': self.address,
             'postal_code': self.postal_code,
-            'last_updated': self.last_updated
+            'last_updated': self.last_updated,
+            'num_users': len(self.users)
         }
         return ret
