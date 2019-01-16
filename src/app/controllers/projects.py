@@ -17,7 +17,7 @@ class ProjectController(HTTPMethodView):
                 admin = session.query(Admin).filter_by(api_key=api_key).first()
                 if admin != None:
                     if admin.is_active == True:
-                        return admin.id
+                        return True
                     else:
                         return None
                 else:
@@ -27,7 +27,7 @@ class ProjectController(HTTPMethodView):
                 user = session.query(User).filter_by(api_key=api_key).first()
                 if user != None:
                     if user.is_active == True:
-                        return user.project_id
+                        return True
                     else:
                         return None
                 else:
@@ -41,11 +41,11 @@ class ProjectController(HTTPMethodView):
         else:
             api_key = request['session'].get('DG_api_key')
             account_type = request['session'].get('account_type')
-            get_id = await self.valid_api_key(api_key, account_type)
-            if get_id != None:
+            if await self.valid_api_key(api_key, account_type) == True:
                 if account_type == 'admin':
                     with scoped_session() as session:
-                        projects = session.query(Project).filter_by(admin_id=get_id)
+                        admin = session.query(Admin).filter_by(api_key=api_key).first()
+                        projects = session.query(Project).filter_by(admin_id=admin.id)
                         if projects != None:
                             project_list = [project.to_dict() for project in projects]
                             return json({'projects': project_list}, 200)
@@ -57,6 +57,7 @@ class ProjectController(HTTPMethodView):
             return json({'error': 'Unauthenticated'})
         else:
             api_key = request['session'].get('DG_api_key')
+            account_type = request['session'].get('account_type')
             for param in ['project_name', 'project_address', 'postal_code']:
                 if request.json.get(param) == None:
                     return json({'error': 'No {} provided for this request!'.format(param)}, status=400)
@@ -65,10 +66,9 @@ class ProjectController(HTTPMethodView):
             project_address = request.json.get('project_address')
             postal_code = request.json.get('postal_code')
 
-            admin = await self.valid_api_key(api_key)
-
-            if admin != False:
+            if await self.valid_api_key(api_key, account_type) == True:
                 with scoped_session() as session:
+                    admin = session.query(Admin).filter_by(api_key=api_key).first()
                     project = Project(
                         project_name=project_name,
                         admin_id=admin.id,

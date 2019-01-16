@@ -12,5 +12,4 @@ def createDb():
 
 def clearDb():
     db_engine = create_engine(os.environ['DATABASE_URL'], echo=True, connect_args={'connect_timeout': 10})
-    try:
         
