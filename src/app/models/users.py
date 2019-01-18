@@ -44,10 +44,6 @@ class User(Base):
         """ Show user object info. """
         return '<User: {}>'.format(self.id)
 
-    def full_name(self):
-        """ Return users full name. """
-        return '{} {}'.format(self.first_name, self.last_name)
-
     def formatted_birthday(self):
         """ Return birthday date in a understandable format. """
         return self.birthday.strftime('%m/%d/%Y')
@@ -59,7 +55,6 @@ class User(Base):
     def to_dict(self):
         ret = {
             'id': self.id,
-            'name': self.full_name(),
             'email': self.email,
             'created_at': format_datetime_object(self.created_at),
             'last_logged_in': format_datetime_object(self.last_logged_in),

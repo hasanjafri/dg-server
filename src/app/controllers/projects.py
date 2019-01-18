@@ -78,7 +78,7 @@ class ProjectController(HTTPMethodView):
                     )
                     session.add(project)
 
-                return json({'msg': 'Project {} was succesfully added!'.format(project_name)})
+                return json({'msg': 'Project {} was successfully added!'.format(project_name)})
             else:
                 return json({'error': 'Unauthenticated'}, status=400)
 
