@@ -53,36 +53,28 @@ class UserController(HTTPMethodView):
         if not request['session'].get('DG_api_key'):
             return json({'error': 'Unauthenticated'})
         else:
-            for param in ['username', 'password', 'project', 'permissions']:
+            for param in ['username', 'password', 'project_id', 'permissions']:
                 if request.json.get(param) == None:
                     return json({'error': '{} field cannot be blank!'.format(param)}, status=400)
 
             username = request.json.get('username')
             (salt, password) = create_password(request.json.get('password'))
-            project = self.get_project_by_id(request.json.get('project_id'))
+            project_id = request.json.get('project_id')
 
-            if project != None:
-                with scoped_session() as session:
-                    user = User(
-                        user_name=username,
-                        password=password,
-                        password_salt=salt,
-                        project_id=project.id,
-                        project=project,
-                        _permissions=request.json.get('permissions')
-                    )
-                    session.add(user)
+            with scoped_session() as session:
+                project = session.query(Project).filter_by(id=project_id).first()
+                user = User(
+                    user_name=username,
+                    password=password,
+                    password_salt=salt,
+                    project_id=project.id,
+                    project=project,
+                    _permissions=request.json.get('permissions')
+                )
+                session.add(user)
 
-                # Return json response.
-                return json({'msg': 'Successfully created User: {}'.format(username)})
-            else:
-                return json({'error': 'Project with id: {} does not exist'.format(str(project.id))})
-
-    async def get_project_by_id(self, project_id):
-        with scoped_session() as session:
-            project = session.query(Project).filter_by(id=project_id).one()
-
-        return project
+            # Return json response.
+            return json({'msg': 'Successfully created User: {}'.format(username)})
 
     async def delete(self, request):
         email = request.json.get('email')

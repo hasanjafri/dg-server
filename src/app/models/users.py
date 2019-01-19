@@ -55,7 +55,7 @@ class User(Base):
     def to_dict(self):
         ret = {
             'id': self.id,
-            'email': self.email,
+            'username': self.user_name,
             'created_at': format_datetime_object(self.created_at),
             'last_logged_in': format_datetime_object(self.last_logged_in),
             'is_active': self.is_active,
