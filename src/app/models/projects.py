@@ -49,4 +49,4 @@ class Project(Base):
         return ret
 
     def users_list(self):
-        return [user.to_dict() for user in self.users]
+        return [user.to_dict() for user in self.users] if self.users else []

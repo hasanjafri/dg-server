@@ -32,7 +32,7 @@ class UserController(HTTPMethodView):
             api_key = request['session'].get('DG_api_key')
             account_type = request['session'].get('account_type')
             if account_type == 'admin':
-                admin_id = self.valid_api_key(api_key)
+                admin_id = await self.valid_api_key(api_key)
                 if admin_id != None:
                     with scoped_session() as session:
                         projects = session.query(Project).filter_by(admin_id=admin_id)
