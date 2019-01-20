@@ -42,6 +42,6 @@ class InventoryProduct(Base):
             'measurement_unit': self.measurement_unit,
             'quantity': self.quantity,
             'cost': self.cost,
-            'supplier': self.supplier.to_dict(),
+            'created_at': format_datetime_object(self.created_at)
         }
         return ret

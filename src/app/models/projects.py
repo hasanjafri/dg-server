@@ -25,7 +25,7 @@ class Project(Base):
     admin = relationship('Admin', back_populates="project")
 
     users = relationship('User', back_populates="project")
-    suppliers = relationship('Supplier', back_populates="project")
+    _suppliers = relationship('Supplier', back_populates="project")
 
     created_at = Column(DateTime, default=datetime.datetime.utcnow)
     last_updated = Column(DateTime, default=datetime.datetime.utcnow, onupdate=datetime.datetime.utcnow)
