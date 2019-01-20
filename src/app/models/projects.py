@@ -18,7 +18,6 @@ class Project(Base):
 
     project_name = Column(String, nullable=False)
     categories = Column(PickleType, nullable=True)
-    _suppliers = Column(String, nullable=True)
     address = Column(String, nullable=False)
     postal_code = Column(String, nullable=False)
 
@@ -26,6 +25,7 @@ class Project(Base):
     admin = relationship('Admin', back_populates="project")
 
     users = relationship('User', back_populates="project")
+    suppliers = relationship('Supplier', back_populates="project")
 
     created_at = Column(DateTime, default=datetime.datetime.utcnow)
     last_updated = Column(DateTime, default=datetime.datetime.utcnow, onupdate=datetime.datetime.utcnow)

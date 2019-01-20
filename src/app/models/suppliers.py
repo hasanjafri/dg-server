@@ -2,7 +2,8 @@ import datetime
 
 from sqlalchemy import (
     Column, String, Integer,
-    DateTime, Date, Boolean
+    DateTime, Date, Boolean,
+    ForeignKey
 )
 
 from sqlalchemy.orm import relationship
@@ -16,6 +17,9 @@ class Supplier(Base):
     
     name = Column(String, nullable=False, unique=True)
     food_items = relationship("InventoryProduct", back_populates="supplier")
+
+    project_id = Column(Integer, ForeignKey('projects.id'))
+    project = relationship("Project", back_populates="suppliers")
 
     created_at = Column(DateTime, default=datetime.datetime.utcnow)
     last_updated = Column(DateTime, default=datetime.datetime.utcnow, onupdate=datetime.datetime.utcnow)
