@@ -75,3 +75,6 @@ class Admin(Base):
             'projects': self.project
         }
         return ret
+
+    def project_ids(self):
+        return [project.id for project in self.project]

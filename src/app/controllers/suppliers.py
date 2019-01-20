@@ -12,6 +12,19 @@ from app.models.users import User
 class SupplierController(HTTPMethodView):
     """ Handles Supplier CRUD operations. """
 
+    async def get(self, request):
+        if not request['session'].get('DG_api_key'):
+            return json({'error': 'Unauthorized, please login again'}, status=405)
+        else:
+            api_key = request['session'].get('DG_api_key')
+            account_type = request['session'].get('account_type')
+            if await self.valid_api_key(api_key, account_type) == True:
+                if account_type == 'admin':
+                    with scoped_session() as session:
+                        admin = session.query(Admin).filter_by(api_key=api_key).first()
+                        project_ids = await admin.project_ids()
+                        pass
+
     async def post(self, request):
         if not request['session'].get('DG_api_key'):
             return json({'error': 'Unauthenticated'})
