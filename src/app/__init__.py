@@ -19,6 +19,7 @@ def create_app():
     from app.controllers.admins import AdminController
     from app.controllers.projects import ProjectController
     from app.controllers.session_auth import SessionAuthController
+    from app.controllers.suppliers import SupplierController
 
     @app.listener('before_server_start')
     async def server_init(app, loop):
@@ -46,6 +47,7 @@ def create_app():
     app.add_route(AdminController.as_view(), '/api/admin')
     app.add_route(ProjectController.as_view(), '/api/project')
     app.add_route(SessionAuthController.as_view(), '/api/auth')
+    app.add_route(SupplierController.as_view(), '/api/supplier')
 
     app.go_fast(host='0.0.0.0', port=6969, debug=True)
 
