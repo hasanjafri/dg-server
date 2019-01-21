@@ -22,8 +22,11 @@ class SupplierController(HTTPMethodView):
                 if account_type == 'admin':
                     with scoped_session() as session:
                         admin = session.query(Admin).filter_by(api_key=api_key).first()
-                        project_ids = await admin.project_ids()
-                        pass
+                        project_ids = admin.project_ids()
+                        suppliers = session.query(Supplier).filter(Supplier.project_id.in_(project_ids)).all()
+                        return json({'suppliers': [supplier.to_dict() for supplier in suppliers] if suppliers else []})
+            else:
+                return json({'error': 'Unauthenticated'}, status=401)
 
     async def post(self, request):
         if not request['session'].get('DG_api_key'):

@@ -32,6 +32,7 @@ class Supplier(Base):
         ret = {
             'id': self.id,
             'name': self.name,
-            'food_items': [food_item.to_dict() for food_item in self.food_items]
+            'food_items': [food_item.to_dict() for food_item in self.food_items],
+            'project_id': self.project_id
         }
         return ret
