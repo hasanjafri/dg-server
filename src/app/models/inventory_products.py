@@ -30,8 +30,8 @@ class InventoryProduct(Base):
     created_at = Column(DateTime, default=datetime.datetime.utcnow)
 
     def __repr__(self):
-        """ Show product object info. """
-        return '<Product: {}>'.format(self.product_name)
+        """ Show inventory_product object info. """
+        return '<inventoryProduct: {}>'.format(self.product_name)
 
     def to_dict(self):
         ret = {
@@ -42,6 +42,7 @@ class InventoryProduct(Base):
             'measurement_unit': self.measurement_unit,
             'quantity': self.quantity,
             'cost': self.cost,
+            'supplier_id': self.supplier_id,
             'created_at': format_datetime_object(self.created_at)
         }
         return ret

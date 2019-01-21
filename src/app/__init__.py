@@ -49,7 +49,7 @@ def create_app():
     app.add_route(ProjectController.as_view(), '/api/project')
     app.add_route(SessionAuthController.as_view(), '/api/auth')
     app.add_route(SupplierController.as_view(), '/api/supplier')
-    app.add_route(InventoryProductController.as_view(), '/api/iventory_product')
+    app.add_route(InventoryProductController.as_view(), '/api/inventory_product')
 
     app.go_fast(host='0.0.0.0', port=6969, debug=True)
 
