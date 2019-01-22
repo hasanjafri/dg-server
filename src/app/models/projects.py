@@ -17,7 +17,6 @@ class Project(Base):
     id = Column(Integer, autoincrement=True, primary_key=True)
 
     project_name = Column(String, nullable=False)
-    categories = Column(PickleType, nullable=True)
     address = Column(String, nullable=False)
     postal_code = Column(String, nullable=False)
 

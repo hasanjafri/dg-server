@@ -27,6 +27,9 @@ class InventoryProduct(Base):
     supplier_id = Column(Integer, ForeignKey('suppliers.id'))
     supplier = relationship("Supplier", back_populates="food_items")
 
+    internal_name_id = Column(Integer, ForeignKey('internal_names.id'))
+    internal_name = relationship("InternalName", back_populates="_food_items")
+
     created_at = Column(DateTime, default=datetime.datetime.utcnow)
 
     def __repr__(self):

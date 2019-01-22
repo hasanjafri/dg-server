@@ -5,6 +5,8 @@ from sqlalchemy import (
     DateTime
 )
 
+from sqlalchemy.orm import relationship
+
 from app.models import Base
 
 class Category(Base):
@@ -13,4 +15,3 @@ class Category(Base):
     id = Column(Integer, autoincrement=True, primary_key=True)
 
     category_name = Column(String, nullable=False)
-    
