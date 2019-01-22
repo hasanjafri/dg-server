@@ -20,3 +20,7 @@ class Category(Base):
 
     created_at = Column(DateTime, default=datetime.datetime.utcnow)
     last_updated = Column(DateTime, default=datetime.datetime.utcnow, onupdate=datetime.datetime.utcnow)
+
+    def __repr__(self):
+        """ Show admin object info. """
+        return '<Category: {}>'.format(self.category_name)
