@@ -12,6 +12,21 @@ from app.models.users import User
 class InventoryProductController(HTTPMethodView):
     """ Handles Inventory Product CRUD operations. """
 
+    async def get(self, request):
+        if not request['session'].get('DG_api_key'):
+            return json({'error': 'Unauthorized, please login again'}, status=405)
+        else:
+            api_key = request['session'].get('DG_api_key')
+            account_type = request['session'].get('account_type')
+            if await self.valid_api_key(api_key, account_type) == True:
+                if account_type == 'admin':
+                    with scoped_session() as session:
+                        supplier_id = int(request.args['sid'][0])
+                        inventory_products = session.query(InventoryProduct).filter_by(supplier_id=supplier_id).all()
+                        return json({'inventory_products': [inventory_product.to_dict() for inventory_product in inventory_products] if inventory_products else []})
+            else:
+                return json({'error': 'Unauthenticated'}, status=401)
+
     async def post(self, request):
         if not request['session'].get('DG_api_key'):
             return json({'error': 'Unauthorized, please login again'}, status=405)
