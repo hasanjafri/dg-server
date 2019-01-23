@@ -12,6 +12,13 @@ from app.models.users import User
 class CategoryController(HTTPMethodView):
     """ Handles Category CRUD operations. """
     
+    async def get(self, request):
+        if not request['session'].get('DG_api_key'):
+            return json({'error': 'Unauthenticated'}, status=401)
+        else:
+            api_key = request['session'].get('DG_api_key')
+            account_type = request['session'].get('account_type')
+
     async def post(self, request):
         if not request['session'].get('DG_api_key'):
             return json({'error': 'Unauthenticated'}, status=401)
