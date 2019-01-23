@@ -2,7 +2,7 @@ import datetime
 
 from sqlalchemy import (
     Column, Integer, String,
-    DateTime
+    DateTime, ForeignKey
 )
 
 from sqlalchemy.orm import relationship
@@ -17,6 +17,9 @@ class Category(Base):
     category_name = Column(String, nullable=False)
 
     _internal_names = relationship("InternalName", back_populates="category")
+
+    project_id = Column(Integer, ForeignKey('projects.id'))
+    project = relationship('Admin', back_populates="_categories")
 
     created_at = Column(DateTime, default=datetime.datetime.utcnow)
     last_updated = Column(DateTime, default=datetime.datetime.utcnow, onupdate=datetime.datetime.utcnow)
