@@ -12,12 +12,20 @@ from app.models.users import User
 class InternalNameController(HTTPMethodView):
     """ Handles Internal naming CRUD operations. """
     
-    async def get(self, request):
-        if not request['session'].get('DG_api_key'):
-            return json({'error': 'Unauthenticated'}, status=401)
-        else:
-            api_key = request['session'].get('DG_api_key')
-            account_type = request['session'].get('account_type')
+    # async def get(self, request):
+    #     if not request['session'].get('DG_api_key'):
+    #         return json({'error': 'Unauthenticated'}, status=401)
+    #     else:
+    #         api_key = request['session'].get('DG_api_key')
+    #         account_type = request['session'].get('account_type')
+    #         if await self.valid_api_key(api_key, account_type) == True:
+    #             if account_type == 'admin':
+    #                 with scoped_session() as session:
+    #                     internal_name_id = int(request.args['inid'][0])
+    #                     internal_name = session.query(InternalName).filter_by(id=internal_name_id).first()
+    #                     return json({'food_items': internal_name.food_items()})
+    #         else:
+    #             return json({'error': 'Unauthenticated'}, status=401)  
 
     async def post(self, request):
         if not request['session'].get('DG_api_key'):
