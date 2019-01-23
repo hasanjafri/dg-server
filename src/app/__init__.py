@@ -25,6 +25,8 @@ def create_app():
     from app.controllers.session_auth import SessionAuthController
     from app.controllers.suppliers import SupplierController
     from app.controllers.inventory_products import InventoryProductController
+    from app.controllers.categories import CategoryController
+    from app.controllers.internal_names import InternalNameController
 
     @app.listener('before_server_start')
     async def server_init(app, loop):
@@ -54,6 +56,8 @@ def create_app():
     app.add_route(SessionAuthController.as_view(), '/api/auth')
     app.add_route(SupplierController.as_view(), '/api/supplier')
     app.add_route(InventoryProductController.as_view(), '/api/inventory_product')
+    app.add_route(CategoryController.as_view(), '/api/category')
+    app.add_route(InternalNameController.as_view(), '/api/internal_name')
 
     app.go_fast(host='0.0.0.0', port=6969, debug=True)
 
