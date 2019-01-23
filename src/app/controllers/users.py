@@ -51,7 +51,7 @@ class UserController(HTTPMethodView):
             json: containing key `msg` with success info & email.
         """
         if not request['session'].get('DG_api_key'):
-            return json({'error': 'Unauthenticated'})
+            return json({'error': 'Unauthenticated'}, status=401)
         else:
             for param in ['username', 'password', 'project_id', 'permissions']:
                 if request.json.get(param) == None:

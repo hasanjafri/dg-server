@@ -13,7 +13,7 @@ class SessionAuthController(HTTPMethodView):
 
     async def get(self, request):
         if not request['session'].get('DG_api_key'):
-            return json({'error': 'Unauthenticated'})
+            return json({'error': 'Unauthenticated'}, status=401)
         else:
             api_key = request['session'].get('DG_api_key')
             return json({'success': 'Authenticated'})
