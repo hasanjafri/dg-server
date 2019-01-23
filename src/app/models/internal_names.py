@@ -8,6 +8,7 @@ from sqlalchemy import (
 from sqlalchemy.orm import relationship
 
 from app.models import Base
+from app.utils.date_utils import format_datetime_object
 
 class InternalName(Base):
     __tablename__ = 'internal_names'
@@ -27,3 +28,12 @@ class InternalName(Base):
     def __repr__(self):
         """ Show admin object info. """
         return '<Internal Name: {}>'.format(self.internal_name)
+
+    def to_dict(self):
+        ret = {
+            'id': self.id,
+            'category_id': self.category_id,
+            'last_updated': format_datetime_object(self.last_updated),
+            'food_items': [food_item.to_dict() for food_item in self._food_items]
+        }
+        return ret
