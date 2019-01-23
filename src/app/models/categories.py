@@ -19,7 +19,7 @@ class Category(Base):
     _internal_names = relationship("InternalName", back_populates="category")
 
     project_id = Column(Integer, ForeignKey('projects.id'))
-    project = relationship('Admin', back_populates="_categories")
+    project = relationship('Project', back_populates="_categories")
 
     created_at = Column(DateTime, default=datetime.datetime.utcnow)
     last_updated = Column(DateTime, default=datetime.datetime.utcnow, onupdate=datetime.datetime.utcnow)
