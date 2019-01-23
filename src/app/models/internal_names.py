@@ -32,8 +32,8 @@ class InternalName(Base):
     def to_dict(self):
         ret = {
             'id': self.id,
+            'internal_name': self.internal_name,
             'category_id': self.category_id,
             'last_updated': format_datetime_object(self.last_updated),
-            'food_items': [food_item.to_dict() for food_item in self._food_items]
         }
         return ret

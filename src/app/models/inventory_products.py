@@ -46,6 +46,7 @@ class InventoryProduct(Base):
             'quantity': self.quantity,
             'cost': self.cost,
             'supplier_id': self.supplier_id,
+            'internal_name_id': self.internal_name_id,
             'created_at': format_datetime_object(self.created_at)
         }
         return ret
