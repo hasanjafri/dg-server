@@ -18,6 +18,14 @@ class CategoryController(HTTPMethodView):
         else:
             api_key = request['session'].get('DG_api_key')
             account_type = request['session'].get('account_type')
+            if await self.valid_api_key(api_key, account_type) == True:
+                if account_type == 'admin':
+                    with scoped_session() as session:
+                        project_id = int(request.args['pid'][0])
+                        categories = session.query(Category).filter_by(project_id=project_id).all()
+                    return json({'categories': [category.to_dict() for category in categories] if categories else []})
+            else:
+                return json({'error': 'Unauthenticated'}, status=401)
 
     async def post(self, request):
         if not request['session'].get('DG_api_key'):
