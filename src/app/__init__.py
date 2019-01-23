@@ -7,10 +7,14 @@ from sanic_cors import CORS
 from sanic.response import text, json
 from sanic_session import Session, AIORedisSessionInterface
 
+STATIC_FOLDER = os.path.join(os.path.dirname(__file__), 'static')
+
 def create_app():
     """ Function for bootstrapping sanic app. """
 
     app = Sanic(__name__)
+    app.static('/static', STATIC_FOLDER)
+    app.static('/favicon.ico', os.path.join(STATIC_FOLDER, 'img', 'favicon.ico'))
     session = Session()
     CORS(app, automatic_options=True, supports_credentials=True, origins="http://localhost:3000")
 
