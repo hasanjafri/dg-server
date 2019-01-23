@@ -10,7 +10,7 @@ from app.models.projects import Project
 from app.models.users import User
 
 class CategoryController(HTTPMethodView):
-    """ Handles Project CRUD operations. """
+    """ Handles Category CRUD operations. """
     
     async def post(self, request):
         if not request['session'].get('DG_api_key'):
@@ -26,16 +26,17 @@ class CategoryController(HTTPMethodView):
             category_name = request.json.get('category_name')
             
             if await self.valid_api_key(api_key, account_type) == True:
-                with scoped_session() as session:
-                    project = session.query(Project).filter_by(id=project_id).first()
-                    category = Category(
-                        category_name=category_name,
-                        project=project,
-                        project_id=project.id
-                    )
-                    session.add(category)
+                if account_type == 'admin':
+                    with scoped_session() as session:
+                        project = session.query(Project).filter_by(id=project_id).first()
+                        category = Category(
+                            category_name=category_name,
+                            project=project,
+                            project_id=project.id
+                        )
+                        session.add(category)
 
-                return json({'msg': 'Category {} was successfully added'.format(category_name)})
+                    return json({'msg': 'Category {} was successfully added'.format(category_name)})
             else:
                 return json({'error': 'Unauthenticated'}, status=400)
 
