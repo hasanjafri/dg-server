@@ -45,8 +45,11 @@ class SessionAuthController(HTTPMethodView):
                 user = session.query(User).filter_by(user_name=username).first()
         elif account_type == 'admin':
             with scoped_session() as session:
-                user = session.query(Admin).filter_by(email=username).first().to_dict()
-        
+                user = session.query(Admin).filter_by(email=username).first()
+                if user != None:
+                    user = user.to_dict()
+                else:
+                    return None
         return user
 
     async def register_user_login(self, account_type, username):

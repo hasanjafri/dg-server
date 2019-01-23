@@ -23,7 +23,7 @@ class CategoryController(HTTPMethodView):
                     with scoped_session() as session:
                         project_id = int(request.args['pid'][0])
                         categories = session.query(Category).filter_by(project_id=project_id).all()
-                    return json({'categories': [category.to_dict() for category in categories] if categories else []})
+                        return json({'categories': [category.to_dict() for category in categories] if categories else []})
             else:
                 return json({'error': 'Unauthenticated'}, status=401)
 
