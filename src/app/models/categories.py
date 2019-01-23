@@ -27,3 +27,12 @@ class Category(Base):
     def __repr__(self):
         """ Show admin object info. """
         return '<Category: {}>'.format(self.category_name)
+    
+    def to_dict(self):
+        ret = {
+            "category_id": self.id,
+            "category_name": self.category_name,
+            "project": self.project_id,
+            "internal_names": [internal_name.internal_name for internal_name in self._internal_names]
+        }
+        return ret
